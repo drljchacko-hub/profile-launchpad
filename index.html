@@ -1,0 +1,1285 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Profile Launchpad</title>
+<meta name="description" content="A private hub for creating and setting up online profiles on professional, academic, social, publishing and medical platforms.">
+<style>
+:root{
+  --bg:#f5f7fa; --surface:#ffffff; --surface-2:#eef2f7; --text:#1b2533; --muted:#5b6778;
+  --border:#d9e0ea; --accent:#0f5e8c; --accent-2:#0b4a6f; --accent-soft:#e3f0f8;
+  --ok:#1f7a4d; --ok-soft:#e2f4ea; --warn:#9a5b00; --warn-soft:#fff3dc; --bad:#b3261e; --bad-soft:#fde8e6;
+  --shadow:0 1px 2px rgba(16,24,40,.06),0 1px 3px rgba(16,24,40,.08); --radius:12px;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#0f141b; --surface:#171e27; --surface-2:#1f2833; --text:#e6ebf2; --muted:#9aa6b6;
+    --border:#2c3744; --accent:#5fb3e6; --accent-2:#8ccaf0; --accent-soft:#16324a;
+    --ok:#5cc98f; --ok-soft:#173326; --warn:#f0b65a; --warn-soft:#3a2c12; --bad:#f08b83; --bad-soft:#3d1d1a;
+    --shadow:none;
+  }
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:70px}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+a{color:var(--accent)}
+header.top{background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:10}
+.wrap{max-width:1120px;margin:0 auto;padding:0 16px}
+.topbar{display:flex;align-items:center;gap:16px;min-height:60px;flex-wrap:wrap}
+.brand{font-weight:700;font-size:1.1rem;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:8px}
+.brand-mark{width:28px;height:28px;border-radius:8px;background:var(--accent);display:grid;place-items:center;color:#fff;font-size:15px}
+nav.jump{display:flex;gap:4px;flex-wrap:wrap;margin-left:auto}
+nav.jump a{text-decoration:none;color:var(--muted);font-size:.9rem;padding:6px 10px;border-radius:8px}
+nav.jump a:hover{background:var(--surface-2);color:var(--text)}
+.hero{padding:28px 0 8px}
+.hero h1{margin:0 0 6px;font-size:1.7rem;letter-spacing:-.01em}
+.hero p{margin:0;color:var(--muted);max-width:760px}
+.progress-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin:18px 0;box-shadow:var(--shadow)}
+.progress-row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:6px;font-size:.95rem}
+.progress-row strong{font-size:1rem}
+.bar{height:12px;background:var(--surface-2);border-radius:999px;overflow:hidden;margin-bottom:12px}
+.bar>span{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--ok));width:0;transition:width .3s}
+.bar.secondary>span{background:var(--ok)}
+.notice{background:var(--warn-soft);color:var(--text);border:1px solid var(--border);border-left:4px solid var(--warn);border-radius:8px;padding:10px 14px;font-size:.92rem;margin:12px 0}
+section{padding:18px 0 8px}
+section>h2{font-size:1.3rem;margin:0 0 4px}
+.section-intro{color:var(--muted);margin:0 0 14px;font-size:.95rem}
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow)}
+.kit-grid{display:grid;gap:14px}
+.field label{display:flex;flex-wrap:wrap;justify-content:space-between;column-gap:12px;font-weight:600;font-size:.92rem;margin-bottom:4px}
+.field .hint{font-weight:400;color:var(--muted);font-size:.85rem}
+.input-row{display:flex;gap:8px;align-items:flex-start}
+input[type=text],textarea,select{width:100%;font:inherit;color:var(--text);background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:9px 11px}
+textarea{resize:vertical;min-height:70px}
+input:focus,textarea:focus,select:focus,button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.count{font-size:.8rem;color:var(--muted);margin-top:3px}
+button,.btn{font:inherit;font-size:.9rem;border:1px solid var(--border);background:var(--surface-2);color:var(--text);border-radius:8px;padding:8px 12px;cursor:pointer;white-space:nowrap;text-decoration:none;display:inline-flex;align-items:center;gap:6px;justify-content:center}
+button:hover,.btn:hover{border-color:var(--accent)}
+.btn-primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn-primary:hover{background:var(--accent-2)}
+@media (prefers-color-scheme: dark){.btn-primary{color:#0f141b}}
+.btn-small{padding:5px 9px;font-size:.82rem}
+.copied{background:var(--ok-soft)!important;border-color:var(--ok)!important}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+.toolbar input[type=text]{max-width:280px}
+.toolbar label.check{display:flex;align-items:center;gap:6px;font-size:.92rem;color:var(--muted)}
+.cat{margin:18px 0 26px}
+.cat h3{font-size:1.05rem;margin:0 0 10px;display:flex;align-items:center;gap:10px}
+.cat h3 .pill{font-size:.78rem;font-weight:500;color:var(--muted);background:var(--surface-2);border-radius:999px;padding:2px 9px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px;display:flex;flex-direction:column;gap:8px;box-shadow:var(--shadow);transition:border-color .2s}
+.card.done{border-color:var(--ok);background:linear-gradient(0deg,var(--surface),var(--surface)) padding-box}
+.card-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.card h4{margin:0;font-size:1rem}
+.card p.purpose{margin:0;color:var(--muted);font-size:.9rem;flex:1}
+.done-box{display:flex;align-items:center;gap:6px;font-size:.82rem;color:var(--muted);cursor:pointer;user-select:none}
+.done-box input{width:18px;height:18px;accent-color:var(--ok);cursor:pointer}
+.specs{display:flex;flex-wrap:wrap;gap:6px;font-size:.8rem}
+.spec{background:var(--surface-2);border-radius:6px;padding:3px 7px;color:var(--text)}
+.spec.fit-ok{background:var(--ok-soft);color:var(--ok)}
+.spec.fit-bad{background:var(--bad-soft);color:var(--bad)}
+.verify{display:inline-block;font-size:.7rem;font-weight:700;letter-spacing:.03em;text-transform:uppercase;background:var(--warn-soft);color:var(--warn);border:1px solid var(--warn);border-radius:5px;padding:0 5px;margin-left:4px;vertical-align:1px;cursor:help}
+.card-links{display:flex;gap:8px;flex-wrap:wrap}
+.card-links .btn{flex:1}
+.note{font-size:.8rem;color:var(--muted);margin:0}
+table.handles{width:100%;border-collapse:collapse;font-size:.92rem}
+table.handles th,table.handles td{text-align:left;padding:8px;border-bottom:1px solid var(--border);vertical-align:middle}
+table.handles th{font-size:.8rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+table.handles td input,table.handles td select{padding:6px 8px;font-size:.9rem}
+.status-available{background:var(--ok-soft)!important}
+.status-secured{background:var(--ok-soft)!important;font-weight:600}
+.status-taken{background:var(--bad-soft)!important}
+@media (max-width:700px){
+  table.handles thead{display:none}
+  table.handles tr{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:10px 0;border-bottom:1px solid var(--border)}
+  table.handles td{border:0;padding:0}
+  table.handles td.name{grid-column:1/-1;font-weight:600}
+  table.handles td.handle-cell{grid-column:1/-1}
+  nav.jump{margin-left:0}
+  .field label{flex-direction:column}
+}
+.data-actions{display:flex;gap:8px;flex-wrap:wrap}
+footer{color:var(--muted);font-size:.85rem;padding:30px 0 50px;border-top:1px solid var(--border);margin-top:30px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--text);color:var(--bg);padding:9px 16px;border-radius:8px;font-size:.9rem;opacity:0;pointer-events:none;transition:opacity .2s;z-index:20}
+.toast.show{opacity:1}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap topbar">
+    <a class="brand" href="#"><span class="brand-mark" aria-hidden="true">&#10148;</span>Profile Launchpad</a>
+    <nav class="jump" aria-label="Sections">
+      <a href="#kit">Profile kit</a>
+      <a href="#platforms">Platforms</a>
+      <a href="#handles">Handles</a>
+      <a href="#data">My data</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="hero">
+    <h1>Profile Launchpad</h1>
+    <p>Write your profile once, then copy it into every platform. Open a platform, create the account, paste your details, tick it off.</p>
+  </div>
+
+  <div class="progress-card" aria-live="polite">
+    <div class="progress-row"><strong>Profiles set up</strong><span id="prog-text">0 of 0</span></div>
+    <div class="bar" role="progressbar" aria-label="Profiles set up" id="prog-bar" aria-valuemin="0" aria-valuemax="100"><span></span></div>
+    <div class="progress-row"><strong>Handles secured</strong><span id="hprog-text">0 of 0</span></div>
+    <div class="bar secondary" role="progressbar" aria-label="Handles secured" id="hprog-bar" aria-valuemin="0" aria-valuemax="100"><span></span></div>
+    <p class="note">Everything you type or tick is saved only in this browser on this device. Nothing is sent anywhere.</p>
+  </div>
+
+  <div class="notice"><strong>About the <span class="verify">verify</span> labels:</strong> these mark a link, character limit or photo size that could not be confirmed when this page was built. Check them on the platform itself. Platforms change their pages often, so if any link stops working, ask Claude to update it.</div>
+
+  <!-- MASTER PROFILE KIT -->
+  <section id="kit">
+    <h2>Master profile kit</h2>
+    <p class="section-intro">Type your details once here. Use the <strong>Copy</strong> buttons to paste them into each platform. Do not put passwords, home address, phone numbers or any patient information here.</p>
+    <div class="panel kit-grid" id="kit-fields"></div>
+  </section>
+
+  <!-- PLATFORMS -->
+  <section id="platforms">
+    <h2>Platforms</h2>
+    <p class="section-intro">Each card shows what the platform is for, its bio limit and photo size, and whether your bio fits. Green = your bio fits; red = too long, shorten it or use a shorter version.</p>
+    <div class="toolbar">
+      <label class="sr-only" for="search">Search platforms</label>
+      <input type="text" id="search" placeholder="Search platforms…" autocomplete="off">
+      <label class="check"><input type="checkbox" id="hide-done"> Hide ones I have finished</label>
+    </div>
+    <div id="platform-list"></div>
+  </section>
+
+  <!-- HANDLES -->
+  <section id="handles">
+    <h2>Handle availability checklist</h2>
+    <p class="section-intro">A handle is your username (for example <em>@drjsmith</em>). Using the same one everywhere makes you easy to find. For each platform: click <strong>Check</strong> — if the page says "not found" or "doesn't exist", the handle is probably free. Then set the status. Once you have created the account, choose <strong>Secured</strong>.</p>
+    <div class="panel" style="overflow-x:auto">
+      <table class="handles">
+        <thead><tr><th>Platform</th><th>Handle to check</th><th>Check</th><th>Status</th></tr></thead>
+        <tbody id="handle-rows"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- DATA -->
+  <section id="data">
+    <h2>My data</h2>
+    <p class="section-intro">Your details live only in this browser. To move them to another computer or keep a backup, use <strong>Download backup</strong>, then <strong>Load backup</strong> on the other device. Clearing your browser history/site data will erase them, so keep a backup.</p>
+    <div class="panel data-actions">
+      <button type="button" id="export">Download backup</button>
+      <button type="button" id="import-btn">Load backup</button>
+      <input type="file" id="import" accept="application/json,.json" hidden>
+      <button type="button" id="reset">Clear everything on this device</button>
+    </div>
+  </section>
+
+  <footer>
+    Profile Launchpad · <a href="links.json">links.json</a> (platform list for AI tools) · <a href="llms.txt">llms.txt</a>. No accounts, tracking or cookies. Data stays in your browser.
+  </footer>
+</main>
+<div class="toast" id="toast" role="status"></div>
+
+<!-- Fallback copy of links.json, used when the page is opened directly from a file. Keep identical to links.json. -->
+<script type="application/json" id="platform-data">
+{
+  "name": "Profile Launchpad platform list",
+  "version": 1,
+  "last_updated": "2026-11-02",
+  "description": "Machine-readable list of online profile platforms used by Profile Launchpad (index.html). Any field name listed in a platform's 'verify' array has NOT been confirmed against the platform itself and should be checked manually. No URL in this file was click-tested at build time (the build environment could not reach these websites), so treat every link as 'test once before relying on it'.",
+  "field_guide": {
+    "id": "Short unique identifier (lowercase, no spaces).",
+    "name": "Platform name as shown to users.",
+    "category": "One of: professional, social, publishing, identity, medical.",
+    "purpose": "Plain-English description of what the platform is for.",
+    "signup_url": "Page where a new account is created.",
+    "edit_profile_url": "Page where an existing profile is edited (usually requires being logged in).",
+    "profile_url_pattern": "Public profile address. {handle} = the user's chosen username; {id} = a number/code the platform assigns; {server} = Mastodon server name. null if no public pattern.",
+    "handle_checkable": "true if {handle} is user-chosen, so availability can be checked by visiting the pattern URL.",
+    "bio_limit": "Maximum characters for the main bio/about field (number), or null if unknown/none.",
+    "bio_type": "Which Master Profile Kit bio fits best: short, medium or long.",
+    "headline_limit": "Maximum characters for a separate headline/tagline field, or null.",
+    "photo_size": "Recommended profile photo size in pixels (width x height), or null.",
+    "banner_size": "Recommended banner/cover image size, or null.",
+    "notes": "Extra plain-English tips.",
+    "verify": "List of field names that could not be verified and should be checked manually."
+  },
+  "categories": [
+    {
+      "id": "professional",
+      "label": "Professional / Academic"
+    },
+    {
+      "id": "social",
+      "label": "Social"
+    },
+    {
+      "id": "publishing",
+      "label": "Publishing"
+    },
+    {
+      "id": "identity",
+      "label": "Link-in-bio / Identity"
+    },
+    {
+      "id": "medical",
+      "label": "Medical / Radiology"
+    }
+  ],
+  "platforms": [
+    {
+      "id": "linkedin",
+      "name": "LinkedIn",
+      "category": "professional",
+      "purpose": "Professional networking and CV-style profile. The main place colleagues, recruiters and conference organisers look you up.",
+      "signup_url": "https://www.linkedin.com/signup",
+      "edit_profile_url": "https://www.linkedin.com/in/me/",
+      "profile_url_pattern": "https://www.linkedin.com/in/{handle}",
+      "handle_checkable": true,
+      "bio_limit": 2600,
+      "bio_type": "long",
+      "headline_limit": 220,
+      "photo_size": "400 x 400",
+      "banner_size": "1584 x 396",
+      "notes": "Set a custom public URL (e.g. /in/your-name) under 'Edit public profile & URL'.",
+      "verify": []
+    },
+    {
+      "id": "orcid",
+      "name": "ORCID",
+      "category": "professional",
+      "purpose": "Free permanent researcher ID that links all your publications. Many journals and funders require it.",
+      "signup_url": "https://orcid.org/register",
+      "edit_profile_url": "https://orcid.org/my-orcid",
+      "profile_url_pattern": "https://orcid.org/{id}",
+      "handle_checkable": false,
+      "bio_limit": 5000,
+      "bio_type": "long",
+      "headline_limit": null,
+      "photo_size": null,
+      "banner_size": null,
+      "notes": "ORCID assigns your ID number; you do not choose a handle. No profile photo.",
+      "verify": [
+        "bio_limit"
+      ]
+    },
+    {
+      "id": "google-scholar",
+      "name": "Google Scholar",
+      "category": "professional",
+      "purpose": "Public citation profile that tracks your papers, citations and h-index automatically.",
+      "signup_url": "https://scholar.google.com/citations?view_op=new_profile",
+      "edit_profile_url": "https://scholar.google.com/citations",
+      "profile_url_pattern": "https://scholar.google.com/citations?user={id}",
+      "handle_checkable": false,
+      "bio_limit": null,
+      "bio_type": "short",
+      "headline_limit": null,
+      "photo_size": null,
+      "banner_size": null,
+      "notes": "Needs a Google account. Verify with your institutional email so the profile can be made public.",
+      "verify": [
+        "signup_url",
+        "photo_size"
+      ]
+    },
+    {
+      "id": "researchgate",
+      "name": "ResearchGate",
+      "category": "professional",
+      "purpose": "Research network for sharing papers, asking questions and following other researchers.",
+      "signup_url": "https://www.researchgate.net/signup",
+      "edit_profile_url": "https://www.researchgate.net/profile",
+      "profile_url_pattern": "https://www.researchgate.net/profile/{handle}",
+      "handle_checkable": false,
+      "bio_limit": null,
+      "bio_type": "medium",
+      "headline_limit": null,
+      "photo_size": null,
+      "banner_size": null,
+      "notes": "Profile address is usually First-Last based on your name. Sign-up is easiest with an institutional email.",
+      "verify": [
+        "signup_url",
+        "edit_profile_url",
+        "bio_limit",
+        "photo_size"
+      ]
+    },
+    {
+      "id": "academia",
+      "name": "Academia.edu",
+      "category": "professional",
+      "purpose": "Platform for uploading and sharing academic papers.",
+      "signup_url": "https://www.academia.edu/signup",
+      "edit_profile_url": "https://www.academia.edu/",
+      "profile_url_pattern": "https://independent.academia.edu/{handle}",
+      "handle_checkable": false,
+      "bio_limit": null,
+      "bio_type": "medium",
+      "headline_limit": null,
+      "photo_size": null,
+      "banner_size": null,
+      "notes": "Address depends on your institution (e.g. nhs.academia.edu/YourName).",
+      "verify": [
+        "signup_url",
+        "edit_profile_url",
+        "profile_url_pattern",
+        "bio_limit",
+        "photo_size"
+      ]
+    },
+    {
+      "id": "wos-researcher",
+      "name": "Web of Science Researcher Profile",
+      "category": "professional",
+      "purpose": "Clarivate's researcher profile (formerly Publons): publications, citations and peer-review record.",
+      "signup_url": "https://www.webofscience.com/wos/author/my-researcher-profile",
+      "edit_profile_url": "https://www.webofscience.com/wos/author/my-researcher-profile",
+      "profile_url_pattern": "https://www.webofscience.com/wos/author/record/{id}",
+      "handle_checkable": false,
+      "bio_limit": null,
+      "bio_type": "medium",
+      "headline_limit": null,
+      "photo_size": null,
+      "banner_size": null,
+      "notes": "Useful for recording peer reviews you have done (good CPD/CESR evidence).",
+      "verify": [
+        "signup_url",
+        "edit_profile_url",
+        "profile_url_pattern"
+      ]
+    },
+    {
+      "id": "scopus",
+      "name": "Scopus Author Profile",
+      "category": "professional",
+      "purpose": "Created automatically by Scopus from your publications. You cannot sign up, but you can correct or merge it.",
+      "signup_url": "https://www.scopus.com/feedback/author/home.uri",
+      "edit_profile_url": "https://www.scopus.com/feedback/author/home.uri",
+      "profile_url_pattern": "https://www.scopus.com/authid/detail.uri?authorId={id}",
+      "handle_checkable": false,
+      "bio_limit": null,
+      "bio_type": "short",
+      "headline_limit": null,
+      "photo_size": null,
+      "banner_size": null,
+      "notes": "Link Scopus to your ORCID so both stay in sync.",
+      "verify": [
+        "signup_url",
+        "edit_profile_url"
+      ]
+    },
+    {
+      "id": "semantic-scholar",
+      "name": "Semantic Scholar",
+      "category": "professional",
+      "purpose": "Free AI-powered research search engine. You can claim your automatically created author page.",
+      "signup_url": "https://www.semanticscholar.org/sign-in",
+      "edit_profile_url": "https://www.semanticscholar.org/me",
+      "profile_url_pattern": "https://www.semanticscholar.org/author/{id}",
+      "handle_checkable": false,
+      "bio_limit": null,
+      "bio_type": "short",
+      "headline_limit": null,
+      "photo_size": null,
+      "banner_size": null,
+      "notes": "Search your name, open your author page, then click 'Claim Author Page'.",
+      "verify": [
+        "signup_url",
+        "edit_profile_url"
+      ]
+    },
+    {
+      "id": "github",
+      "name": "GitHub",
+      "category": "professional",
+      "purpose": "Hosts code and websites (including this one). Useful if you publish research tools or a personal site.",
+      "signup_url": "https://github.com/signup",
+      "edit_profile_url": "https://github.com/settings/profile",
+      "profile_url_pattern": "https://github.com/{handle}",
+      "handle_checkable": true,
+      "bio_limit": 160,
+      "bio_type": "short",
+      "headline_limit": null,
+      "photo_size": "500 x 500",
+      "banner_size": null,
+      "notes": "",
+      "verify": [
+        "photo_size"
+      ]
+    },
+    {
+      "id": "x",
+      "name": "X (Twitter)",
+      "category": "social",
+      "purpose": "Short public posts. Still widely used for medical conference chatter and journal clubs.",
+      "signup_url": "https://x.com/i/flow/signup",
+      "edit_profile_url": "https://x.com/settings/profile",
+      "profile_url_pattern": "https://x.com/{handle}",
+      "handle_checkable": true,
+      "bio_limit": 160,
+      "bio_type": "short",
+      "headline_limit": null,
+      "photo_size": "400 x 400",
+      "banner_size": "1500 x 500",
+      "notes": "Handle maximum is 15 characters.",
+      "verify": []
+    },
+    {
+      "id": "bluesky",
+      "name": "Bluesky",
+      "category": "social",
+      "purpose": "Twitter-like network popular with academics and clinicians who left X.",
+      "signup_url": "https://bsky.app/",
+      "edit_profile_url": "https://bsky.app/",
+      "profile_url_pattern": "https://bsky.app/profile/{handle}.bsky.social",
+      "handle_checkable": true,
+      "bio_limit": 256,
+      "bio_type": "short",
+      "headline_limit": null,
+      "photo_size": "1000 x 1000",
+      "banner_size": "1500 x 500",
+      "notes": "Click 'Create account' on the home page. Edit your profile from your own profile page ('Edit Profile' button).",
+      "verify": [
+        "bio_limit",
+        "photo_size",
+        "banner_size"
+      ]
+    },
+    {
+      "id": "mastodon",
+      "name": "Mastodon",
+      "category": "social",
+      "purpose": "Decentralised social network; you join a 'server' (e.g. med-mastodon.com).",
+      "signup_url": "https://joinmastodon.org/servers",
+      "edit_profile_url": "https://{server}/settings/profile",
+      "profile_url_pattern": "https://{server}/@{handle}",
+      "handle_checkable": false,
+      "bio_limit": 500,
+      "bio_type": "medium",
+      "headline_limit": null,
+      "photo_size": "400 x 400",
+      "banner_size": "1500 x 500",
+      "notes": "Bio limit is the default and can differ by server.",
+      "verify": [
+        "bio_limit"
+      ]
+    },
+    {
+      "id": "facebook",
+      "name": "Facebook",
+      "category": "social",
+      "purpose": "General social network; useful for professional groups and society pages.",
+      "signup_url": "https://www.facebook.com/r.php",
+      "edit_profile_url": "https://www.facebook.com/me",
+      "profile_url_pattern": "https://www.facebook.com/{handle}",
+      "handle_checkable": true,
+      "bio_limit": 101,
+      "bio_type": "short",
+      "headline_limit": null,
+      "photo_size": "320 x 320",
+      "banner_size": "851 x 315",
+      "notes": "The 'Intro' bio is the short text under your photo.",
+      "verify": [
+        "bio_limit",
+        "banner_size"
+      ]
+    },
+    {
+      "id": "instagram",
+      "name": "Instagram",
+      "category": "social",
+      "purpose": "Photo and short-video sharing. Popular for teaching cases and public education.",
+      "signup_url": "https://www.instagram.com/accounts/emailsignup/",
+      "edit_profile_url": "https://www.instagram.com/accounts/edit/",
+      "profile_url_pattern": "https://www.instagram.com/{handle}",
+      "handle_checkable": true,
+      "bio_limit": 150,
+      "bio_type": "short",
+      "headline_limit": null,
+      "photo_size": "320 x 320",
+      "banner_size": null,
+      "notes": "Never post identifiable patient images.",
+      "verify": []
+    },
+    {
+      "id": "threads",
+      "name": "Threads",
+      "category": "social",
+      "purpose": "Meta's text-post network. Uses your Instagram account to sign in.",
+      "signup_url": "https://www.threads.com/login",
+      "edit_profile_url": "https://www.threads.com/",
+      "profile_url_pattern": "https://www.threads.com/@{handle}",
+      "handle_checkable": true,
+      "bio_limit": 150,
+      "bio_type": "short",
+      "headline_limit": null,
+      "photo_size": "320 x 320",
+      "banner_size": null,
+      "notes": "Your handle is the same as your Instagram handle. Edit profile from your profile page in the app or website.",
+      "verify": [
+        "signup_url",
+        "bio_limit",
+        "photo_size"
+      ]
+    },
+    {
+      "id": "youtube",
+      "name": "YouTube",
+      "category": "social",
+      "purpose": "Video channel for lectures, teaching videos and talks.",
+      "signup_url": "https://www.youtube.com/create_channel",
+      "edit_profile_url": "https://studio.youtube.com/",
+      "profile_url_pattern": "https://www.youtube.com/@{handle}",
+      "handle_checkable": true,
+      "bio_limit": 1000,
+      "bio_type": "long",
+      "headline_limit": null,
+      "photo_size": "800 x 800",
+      "banner_size": "2560 x 1440",
+      "notes": "In YouTube Studio, go to 'Customisation' to edit description, photo and banner.",
+      "verify": []
+    },
+    {
+      "id": "tiktok",
+      "name": "TikTok",
+      "category": "social",
+      "purpose": "Short vertical videos. Growing use for public health education.",
+      "signup_url": "https://www.tiktok.com/signup",
+      "edit_profile_url": "https://www.tiktok.com/",
+      "profile_url_pattern": "https://www.tiktok.com/@{handle}",
+      "handle_checkable": true,
+      "bio_limit": 80,
+      "bio_type": "short",
+      "headline_limit": null,
+      "photo_size": "200 x 200",
+      "banner_size": null,
+      "notes": "Open your profile and click 'Edit profile'.",
+      "verify": [
+        "edit_profile_url"
+      ]
+    },
+    {
+      "id": "medium",
+      "name": "Medium",
+      "category": "publishing",
+      "purpose": "Blogging platform with a built-in readership.",
+      "signup_url": "https://medium.com/m/signin",
+      "edit_profile_url": "https://medium.com/me/settings",
+      "profile_url_pattern": "https://medium.com/@{handle}",
+      "handle_checkable": true,
+      "bio_limit": 160,
+      "bio_type": "short",
+      "headline_limit": null,
+      "photo_size": null,
+      "banner_size": null,
+      "notes": "",
+      "verify": [
+        "signup_url",
+        "bio_limit",
+        "photo_size"
+      ]
+    },
+    {
+      "id": "substack",
+      "name": "Substack",
+      "category": "publishing",
+      "purpose": "Newsletter and blog in one; readers subscribe by email.",
+      "signup_url": "https://substack.com/signup",
+      "edit_profile_url": "https://substack.com/settings",
+      "profile_url_pattern": "https://{handle}.substack.com",
+      "handle_checkable": true,
+      "bio_limit": null,
+      "bio_type": "medium",
+      "headline_limit": null,
+      "photo_size": null,
+      "banner_size": null,
+      "notes": "",
+      "verify": [
+        "signup_url",
+        "edit_profile_url",
+        "bio_limit",
+        "photo_size"
+      ]
+    },
+    {
+      "id": "wordpress",
+      "name": "WordPress.com",
+      "category": "publishing",
+      "purpose": "Full website or blog builder, free tier available.",
+      "signup_url": "https://wordpress.com/start",
+      "edit_profile_url": "https://wordpress.com/me",
+      "profile_url_pattern": "https://{handle}.wordpress.com",
+      "handle_checkable": true,
+      "bio_limit": null,
+      "bio_type": "medium",
+      "headline_limit": null,
+      "photo_size": null,
+      "banner_size": null,
+      "notes": "Your WordPress profile photo comes from Gravatar.",
+      "verify": []
+    },
+    {
+      "id": "blogger",
+      "name": "Blogger",
+      "category": "publishing",
+      "purpose": "Google's free, simple blog platform.",
+      "signup_url": "https://www.blogger.com/",
+      "edit_profile_url": "https://www.blogger.com/",
+      "profile_url_pattern": "https://{handle}.blogspot.com",
+      "handle_checkable": true,
+      "bio_limit": null,
+      "bio_type": "medium",
+      "headline_limit": null,
+      "photo_size": null,
+      "banner_size": null,
+      "notes": "Needs a Google account.",
+      "verify": []
+    },
+    {
+      "id": "ghost",
+      "name": "Ghost",
+      "category": "publishing",
+      "purpose": "Professional blog and newsletter platform (paid hosting).",
+      "signup_url": "https://ghost.org/signup/",
+      "edit_profile_url": "https://ghost.org/",
+      "profile_url_pattern": "https://{handle}.ghost.io",
+      "handle_checkable": true,
+      "bio_limit": 200,
+      "bio_type": "short",
+      "headline_limit": null,
+      "photo_size": null,
+      "banner_size": null,
+      "notes": "Edit your author bio in your site's admin area (yoursite.ghost.io/ghost) under Staff.",
+      "verify": [
+        "signup_url",
+        "edit_profile_url",
+        "bio_limit"
+      ]
+    },
+    {
+      "id": "github-pages",
+      "name": "GitHub Pages",
+      "category": "publishing",
+      "purpose": "Free hosting for a simple personal website (this site uses it).",
+      "signup_url": "https://pages.github.com/",
+      "edit_profile_url": "https://github.com/settings/pages",
+      "profile_url_pattern": "https://{handle}.github.io",
+      "handle_checkable": true,
+      "bio_limit": null,
+      "bio_type": "long",
+      "headline_limit": null,
+      "photo_size": null,
+      "banner_size": null,
+      "notes": "Uses your GitHub username. See README.md for setup steps.",
+      "verify": [
+        "edit_profile_url"
+      ]
+    },
+    {
+      "id": "linktree",
+      "name": "Linktree",
+      "category": "identity",
+      "purpose": "One link that lists all your other profiles. Put it in every bio.",
+      "signup_url": "https://linktr.ee/register",
+      "edit_profile_url": "https://linktr.ee/admin",
+      "profile_url_pattern": "https://linktr.ee/{handle}",
+      "handle_checkable": true,
+      "bio_limit": 80,
+      "bio_type": "short",
+      "headline_limit": null,
+      "photo_size": null,
+      "banner_size": null,
+      "notes": "",
+      "verify": [
+        "bio_limit",
+        "photo_size"
+      ]
+    },
+    {
+      "id": "beacons",
+      "name": "Beacons",
+      "category": "identity",
+      "purpose": "Link-in-bio page alternative to Linktree.",
+      "signup_url": "https://beacons.ai/signup",
+      "edit_profile_url": "https://account.beacons.ai/",
+      "profile_url_pattern": "https://beacons.ai/{handle}",
+      "handle_checkable": true,
+      "bio_limit": null,
+      "bio_type": "short",
+      "headline_limit": null,
+      "photo_size": null,
+      "banner_size": null,
+      "notes": "",
+      "verify": [
+        "signup_url",
+        "edit_profile_url"
+      ]
+    },
+    {
+      "id": "aboutme",
+      "name": "about.me",
+      "category": "identity",
+      "purpose": "Simple one-page personal profile.",
+      "signup_url": "https://about.me/signup",
+      "edit_profile_url": "https://about.me/edit",
+      "profile_url_pattern": "https://about.me/{handle}",
+      "handle_checkable": true,
+      "bio_limit": null,
+      "bio_type": "medium",
+      "headline_limit": null,
+      "photo_size": null,
+      "banner_size": null,
+      "notes": "",
+      "verify": [
+        "signup_url",
+        "edit_profile_url"
+      ]
+    },
+    {
+      "id": "carrd",
+      "name": "Carrd",
+      "category": "identity",
+      "purpose": "Build a one-page personal website in minutes.",
+      "signup_url": "https://carrd.co/sign-up",
+      "edit_profile_url": "https://carrd.co/dashboard",
+      "profile_url_pattern": "https://{handle}.carrd.co",
+      "handle_checkable": true,
+      "bio_limit": null,
+      "bio_type": "medium",
+      "headline_limit": null,
+      "photo_size": null,
+      "banner_size": null,
+      "notes": "",
+      "verify": [
+        "signup_url",
+        "edit_profile_url"
+      ]
+    },
+    {
+      "id": "gravatar",
+      "name": "Gravatar",
+      "category": "identity",
+      "purpose": "One profile photo linked to your email address, reused automatically by WordPress, GitHub comments and many other sites.",
+      "signup_url": "https://gravatar.com/",
+      "edit_profile_url": "https://gravatar.com/profile",
+      "profile_url_pattern": "https://gravatar.com/{handle}",
+      "handle_checkable": true,
+      "bio_limit": null,
+      "bio_type": "short",
+      "headline_limit": null,
+      "photo_size": "2048 x 2048",
+      "banner_size": null,
+      "notes": "Upload a large square photo; Gravatar resizes it for each site.",
+      "verify": [
+        "edit_profile_url",
+        "photo_size"
+      ]
+    },
+    {
+      "id": "google-account",
+      "name": "Google Account profile",
+      "category": "identity",
+      "purpose": "The name and photo shown across Gmail, Google Scholar and YouTube.",
+      "signup_url": "https://accounts.google.com/signup",
+      "edit_profile_url": "https://myaccount.google.com/personal-info",
+      "profile_url_pattern": null,
+      "handle_checkable": false,
+      "bio_limit": null,
+      "bio_type": "short",
+      "headline_limit": null,
+      "photo_size": null,
+      "banner_size": null,
+      "notes": "",
+      "verify": []
+    },
+    {
+      "id": "radiopaedia",
+      "name": "Radiopaedia",
+      "category": "medical",
+      "purpose": "Collaborative radiology reference and case library. Contributing cases builds a visible teaching record.",
+      "signup_url": "https://radiopaedia.org/users/sign_up",
+      "edit_profile_url": "https://radiopaedia.org/users/edit",
+      "profile_url_pattern": "https://radiopaedia.org/users/{handle}",
+      "handle_checkable": false,
+      "bio_limit": null,
+      "bio_type": "medium",
+      "headline_limit": null,
+      "photo_size": null,
+      "banner_size": null,
+      "notes": "Fully anonymise every image before uploading cases.",
+      "verify": [
+        "edit_profile_url",
+        "profile_url_pattern"
+      ]
+    },
+    {
+      "id": "doctors-net-uk",
+      "name": "Doctors.net.uk",
+      "category": "medical",
+      "purpose": "UK doctors-only network: forums, e-learning and CPD.",
+      "signup_url": "https://www.doctors.net.uk/",
+      "edit_profile_url": "https://www.doctors.net.uk/",
+      "profile_url_pattern": null,
+      "handle_checkable": false,
+      "bio_limit": null,
+      "bio_type": "short",
+      "headline_limit": null,
+      "photo_size": null,
+      "banner_size": null,
+      "notes": "Registration usually asks for your GMC number.",
+      "verify": [
+        "signup_url",
+        "edit_profile_url"
+      ]
+    },
+    {
+      "id": "doximity",
+      "name": "Doximity",
+      "category": "medical",
+      "purpose": "Professional network for physicians (mainly US-based).",
+      "signup_url": "https://www.doximity.com/signup",
+      "edit_profile_url": "https://www.doximity.com/profile",
+      "profile_url_pattern": "https://www.doximity.com/pub/{handle}",
+      "handle_checkable": false,
+      "bio_limit": null,
+      "bio_type": "medium",
+      "headline_limit": null,
+      "photo_size": null,
+      "banner_size": null,
+      "notes": "Mainly useful if you have US connections.",
+      "verify": [
+        "signup_url",
+        "edit_profile_url",
+        "profile_url_pattern"
+      ]
+    },
+    {
+      "id": "figure1",
+      "name": "Figure 1",
+      "category": "medical",
+      "purpose": "Case-sharing app for healthcare professionals (medical images with discussion).",
+      "signup_url": "https://www.figure1.com/",
+      "edit_profile_url": "https://www.figure1.com/",
+      "profile_url_pattern": null,
+      "handle_checkable": false,
+      "bio_limit": null,
+      "bio_type": "short",
+      "headline_limit": null,
+      "photo_size": null,
+      "banner_size": null,
+      "notes": "Mostly used through the phone app.",
+      "verify": [
+        "signup_url",
+        "edit_profile_url"
+      ]
+    },
+    {
+      "id": "medscape",
+      "name": "Medscape",
+      "category": "medical",
+      "purpose": "Medical news, reference and CME/CPD content.",
+      "signup_url": "https://www.medscape.com/",
+      "edit_profile_url": "https://www.medscape.com/",
+      "profile_url_pattern": null,
+      "handle_checkable": false,
+      "bio_limit": null,
+      "bio_type": "short",
+      "headline_limit": null,
+      "photo_size": null,
+      "banner_size": null,
+      "notes": "Click 'Register' / 'Log in' at the top of the page.",
+      "verify": [
+        "signup_url",
+        "edit_profile_url"
+      ]
+    },
+    {
+      "id": "sermo",
+      "name": "Sermo",
+      "category": "medical",
+      "purpose": "Doctors-only anonymous discussion network.",
+      "signup_url": "https://www.sermo.com/",
+      "edit_profile_url": "https://www.sermo.com/",
+      "profile_url_pattern": null,
+      "handle_checkable": false,
+      "bio_limit": null,
+      "bio_type": "short",
+      "headline_limit": null,
+      "photo_size": null,
+      "banner_size": null,
+      "notes": "",
+      "verify": [
+        "signup_url",
+        "edit_profile_url"
+      ]
+    },
+    {
+      "id": "doctify",
+      "name": "Doctify",
+      "category": "medical",
+      "purpose": "UK patient-facing specialist directory with verified reviews (useful for private practice).",
+      "signup_url": "https://www.doctify.com/uk/for-specialists",
+      "edit_profile_url": "https://www.doctify.com/",
+      "profile_url_pattern": null,
+      "handle_checkable": false,
+      "bio_limit": null,
+      "bio_type": "long",
+      "headline_limit": null,
+      "photo_size": null,
+      "banner_size": null,
+      "notes": "",
+      "verify": [
+        "signup_url",
+        "edit_profile_url"
+      ]
+    },
+    {
+      "id": "topdoctors",
+      "name": "Top Doctors UK",
+      "category": "medical",
+      "purpose": "Patient-facing directory of private consultants.",
+      "signup_url": "https://www.topdoctors.co.uk/",
+      "edit_profile_url": "https://www.topdoctors.co.uk/",
+      "profile_url_pattern": null,
+      "handle_checkable": false,
+      "bio_limit": null,
+      "bio_type": "long",
+      "headline_limit": null,
+      "photo_size": null,
+      "banner_size": null,
+      "notes": "Look for 'Are you a doctor?' or similar on the home page.",
+      "verify": [
+        "signup_url",
+        "edit_profile_url"
+      ]
+    },
+    {
+      "id": "rcr",
+      "name": "Royal College of Radiologists (RCR) portal",
+      "category": "medical",
+      "purpose": "RCR membership account: CPD diary, events, exams and member directory.",
+      "signup_url": "https://www.rcr.ac.uk/",
+      "edit_profile_url": "https://www.rcr.ac.uk/",
+      "profile_url_pattern": null,
+      "handle_checkable": false,
+      "bio_limit": null,
+      "bio_type": "short",
+      "headline_limit": null,
+      "photo_size": null,
+      "banner_size": null,
+      "notes": "Use 'Log in' / 'My RCR' at the top of the site.",
+      "verify": [
+        "signup_url",
+        "edit_profile_url"
+      ]
+    },
+    {
+      "id": "myesr",
+      "name": "MyESR (European Society of Radiology)",
+      "category": "medical",
+      "purpose": "ESR account for membership, ECR congress registration and e-learning.",
+      "signup_url": "https://www.myesr.org/",
+      "edit_profile_url": "https://www.myesr.org/",
+      "profile_url_pattern": null,
+      "handle_checkable": false,
+      "bio_limit": null,
+      "bio_type": "short",
+      "headline_limit": null,
+      "photo_size": null,
+      "banner_size": null,
+      "notes": "",
+      "verify": [
+        "signup_url",
+        "edit_profile_url"
+      ]
+    },
+    {
+      "id": "rsna",
+      "name": "RSNA account",
+      "category": "medical",
+      "purpose": "Radiological Society of North America: membership, annual meeting and journals (Radiology, RadioGraphics).",
+      "signup_url": "https://www.rsna.org/",
+      "edit_profile_url": "https://www.rsna.org/",
+      "profile_url_pattern": null,
+      "handle_checkable": false,
+      "bio_limit": null,
+      "bio_type": "short",
+      "headline_limit": null,
+      "photo_size": null,
+      "banner_size": null,
+      "notes": "",
+      "verify": [
+        "signup_url",
+        "edit_profile_url"
+      ]
+    }
+  ]
+}
+</script>
+
+<script>
+(function(){
+  "use strict";
+  var STORE_KEY = "profileLaunchpad.v1";
+
+  var KIT_FIELDS = [
+    {id:"name", label:"Full name", hint:"As you want it shown, e.g. Dr Jane Smith", type:"input"},
+    {id:"title", label:"Professional title", hint:"e.g. Consultant Radiologist", type:"input"},
+    {id:"headline", label:"Headline", hint:"One line. LinkedIn allows 220 characters", type:"input", limit:220},
+    {id:"bio_short", label:"Short bio", hint:"Aim for 150 characters or fewer (fits Instagram, X, GitHub)", type:"textarea", limit:150},
+    {id:"bio_medium", label:"Medium bio", hint:"Aim for 300–500 characters", type:"textarea", limit:500},
+    {id:"bio_long", label:"Long bio", hint:"Full 'About' section. LinkedIn allows 2,600 characters", type:"textarea", limit:2600, rows:7},
+    {id:"handle", label:"Preferred handle", hint:"Your first-choice username, no @ (e.g. drjanesmith)", type:"input"},
+    {id:"handle_alt", label:"Backup handles", hint:"If the first is taken, separated by commas", type:"input"},
+    {id:"website", label:"Website or link-in-bio address", hint:"e.g. your Linktree or GitHub Pages address", type:"input"},
+    {id:"keywords", label:"Keywords / interests", hint:"e.g. neuroradiology, stroke imaging, CT angiography", type:"input"}
+  ];
+  var BIO_LABEL = {short:"Short bio", medium:"Medium bio", long:"Long bio"};
+  var STATUSES = [["", "Not checked"],["available","Available"],["taken","Taken"],["secured","Secured (account made)"]];
+
+  // ---------- storage (browser only) ----------
+  function blankState(){ return {kit:{}, done:{}, handles:{}}; }
+  var state = blankState();
+  try {
+    var raw = localStorage.getItem(STORE_KEY);
+    if (raw) { var parsed = JSON.parse(raw); state.kit = parsed.kit||{}; state.done = parsed.done||{}; state.handles = parsed.handles||{}; }
+  } catch(e) {}
+  function save(){ try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch(e) { toast("Could not save — your browser may be in private mode."); } }
+
+  // ---------- helpers ----------
+  function $(s, el){ return (el||document).querySelector(s); }
+  function el(tag, attrs, children){
+    var n = document.createElement(tag);
+    if (attrs) Object.keys(attrs).forEach(function(k){
+      if (k === "text") n.textContent = attrs[k];
+      else if (k === "class") n.className = attrs[k];
+      else if (k.slice(0,2) === "on") n.addEventListener(k.slice(2), attrs[k]);
+      else n.setAttribute(k, attrs[k]);
+    });
+    (children||[]).forEach(function(c){ if (c) n.appendChild(typeof c === "string" ? document.createTextNode(c) : c); });
+    return n;
+  }
+  function toast(msg){ var t = $("#toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(toast._t); toast._t = setTimeout(function(){ t.classList.remove("show"); }, 1800); }
+  function copyText(text, btn){
+    if (!text) { toast("Nothing to copy yet"); return; }
+    function ok(){ if (btn){ btn.classList.add("copied"); btn.textContent = "Copied"; setTimeout(function(){ btn.classList.remove("copied"); btn.textContent = "Copy"; }, 1400);} toast("Copied"); }
+    if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(text).then(ok, fallback); else fallback();
+    function fallback(){ var ta = el("textarea"); ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0"; document.body.appendChild(ta); ta.select(); try { document.execCommand("copy"); ok(); } catch(e){ toast("Copy failed — select and copy manually"); } document.body.removeChild(ta); }
+  }
+  function verifyBadge(p, field){ return (p.verify||[]).indexOf(field) >= 0 ? el("span", {class:"verify", title:"Not confirmed — please check on the platform", text:"verify"}) : null; }
+  function cleanHandle(h){ return (h||"").trim().replace(/^@+/, ""); }
+  function fillPattern(pattern, handle){ return pattern.replace(/\{handle\}/g, encodeURIComponent(handle)); }
+
+  // ---------- Master kit ----------
+  var counters = {};
+  function renderKit(){
+    var box = $("#kit-fields");
+    KIT_FIELDS.forEach(function(f){
+      var id = "kit-" + f.id;
+      var input = f.type === "textarea" ? el("textarea", {id:id, rows:String(f.rows||3)}) : el("input", {type:"text", id:id, autocomplete:"off"});
+      input.value = state.kit[f.id] || "";
+      var count = el("div", {class:"count"});
+      counters[f.id] = count;
+      input.addEventListener("input", function(){ state.kit[f.id] = input.value; save(); updateCount(f); refreshDynamic(); });
+      var copyBtn = el("button", {type:"button", "aria-label":"Copy " + f.label, text:"Copy", onclick:function(){ copyText(input.value, copyBtn); }});
+      box.appendChild(el("div", {class:"field"}, [
+        el("label", {for:id}, [f.label, el("span", {class:"hint", text:f.hint})]),
+        el("div", {class:"input-row"}, [input, copyBtn]),
+        count
+      ]));
+      updateCount(f);
+    });
+  }
+  function updateCount(f){
+    var len = (state.kit[f.id]||"").length, c = counters[f.id];
+    if (!c) return;
+    c.textContent = len + " characters" + (f.limit ? " (target " + f.limit + ")" : "");
+    c.style.color = f.limit && len > f.limit ? "var(--bad)" : "";
+  }
+
+  // ---------- Platforms ----------
+  var DATA, cardRefs = {};
+  function renderPlatforms(){
+    var list = $("#platform-list"); list.innerHTML = "";
+    DATA.categories.forEach(function(cat){
+      var items = DATA.platforms.filter(function(p){ return p.category === cat.id; });
+      if (!items.length) return;
+      var pill = el("span", {class:"pill"});
+      var grid = el("div", {class:"cards"});
+      var wrap = el("div", {class:"cat", "data-cat":cat.id}, [el("h3", {}, [cat.label, pill]), grid]);
+      items.forEach(function(p){ grid.appendChild(renderCard(p)); });
+      wrap._pill = pill; wrap._items = items;
+      list.appendChild(wrap);
+    });
+    refreshDynamic();
+  }
+  function renderCard(p){
+    var cb = el("input", {type:"checkbox", id:"done-" + p.id});
+    cb.checked = !!state.done[p.id];
+    var card = el("article", {class:"card" + (cb.checked ? " done" : ""), "data-id":p.id});
+    cb.addEventListener("change", function(){ if (cb.checked) state.done[p.id] = true; else delete state.done[p.id]; save(); card.classList.toggle("done", cb.checked); refreshDynamic(); });
+
+    var specs = el("div", {class:"specs"});
+    var bioSpec = el("span", {class:"spec"});
+    specs.appendChild(bioSpec);
+    if (p.headline_limit) specs.appendChild(el("span", {class:"spec"}, ["Headline: " + p.headline_limit + " chars", verifyBadge(p, "headline_limit")]));
+    specs.appendChild(el("span", {class:"spec"}, ["Photo: " + (p.photo_size ? p.photo_size + " px" : "no fixed size"), p.photo_size ? verifyBadge(p, "photo_size") : null]));
+    if (p.banner_size) specs.appendChild(el("span", {class:"spec"}, ["Banner: " + p.banner_size + " px", verifyBadge(p, "banner_size")]));
+    var fit = el("span", {class:"spec"});
+    specs.appendChild(fit);
+
+    var signup = el("a", {class:"btn btn-primary", href:p.signup_url, target:"_blank", rel:"noopener noreferrer"}, ["Create account", verifyBadge(p, "signup_url")]);
+    var edit = el("a", {class:"btn", href:p.edit_profile_url, target:"_blank", rel:"noopener noreferrer"}, ["Edit profile", verifyBadge(p, "edit_profile_url")]);
+    var bioType = p.bio_type || "short";
+    var copyBio = el("button", {type:"button", class:"btn-small", text:"Copy " + BIO_LABEL[bioType].toLowerCase(), onclick:function(){ copyText(state.kit["bio_" + bioType], null); }});
+
+    card.appendChild(el("div", {class:"card-head"}, [
+      el("h4", {text:p.name}),
+      el("label", {class:"done-box", for:"done-" + p.id}, [cb, "Done"])
+    ]));
+    card.appendChild(el("p", {class:"purpose", text:p.purpose}));
+    card.appendChild(specs);
+    if (p.notes) card.appendChild(el("p", {class:"note", text:p.notes}));
+    card.appendChild(el("div", {class:"card-links"}, [signup, edit]));
+    card.appendChild(el("div", {}, [copyBio]));
+    cardRefs[p.id] = {card:card, cb:cb, bioSpec:bioSpec, fit:fit, p:p};
+    return card;
+  }
+  function updateCardFit(ref){
+    var p = ref.p, bioType = p.bio_type || "short";
+    ref.bioSpec.innerHTML = "";
+    ref.bioSpec.appendChild(document.createTextNode("Bio: " + (p.bio_limit ? p.bio_limit.toLocaleString() + " chars" : "no known limit")));
+    var b = verifyBadge(p, "bio_limit"); if (b) ref.bioSpec.appendChild(b);
+    var text = state.kit["bio_" + bioType] || "";
+    if (!text) { ref.fit.className = "spec"; ref.fit.textContent = "Use: " + BIO_LABEL[bioType]; return; }
+    if (!p.bio_limit) { ref.fit.className = "spec"; ref.fit.textContent = BIO_LABEL[bioType] + ": " + text.length + " chars"; return; }
+    var okFit = text.length <= p.bio_limit;
+    ref.fit.className = "spec " + (okFit ? "fit-ok" : "fit-bad");
+    ref.fit.textContent = BIO_LABEL[bioType] + ": " + text.length + "/" + p.bio_limit + (okFit ? " ✓ fits" : " ✗ too long");
+  }
+  function applyFilter(){
+    var q = ($("#search").value || "").toLowerCase().trim();
+    var hide = $("#hide-done").checked;
+    document.querySelectorAll(".cat").forEach(function(wrap){
+      var shown = 0;
+      wrap._items.forEach(function(p){
+        var ref = cardRefs[p.id];
+        var match = !q || (p.name + " " + p.purpose).toLowerCase().indexOf(q) >= 0;
+        var vis = match && !(hide && state.done[p.id]);
+        ref.card.style.display = vis ? "" : "none";
+        if (vis) shown++;
+      });
+      wrap.style.display = shown ? "" : "none";
+      var done = wrap._items.filter(function(p){ return state.done[p.id]; }).length;
+      wrap._pill.textContent = done + " / " + wrap._items.length + " done";
+    });
+  }
+
+  // ---------- Handles ----------
+  var handleRefs = [];
+  function renderHandles(){
+    var tbody = $("#handle-rows"); tbody.innerHTML = ""; handleRefs = [];
+    DATA.platforms.filter(function(p){ return p.handle_checkable && p.profile_url_pattern; }).forEach(function(p){
+      var saved = state.handles[p.id] || {};
+      var input = el("input", {type:"text", "aria-label":"Handle for " + p.name, autocomplete:"off"});
+      input.value = saved.handle || "";
+      var checkLink = el("a", {class:"btn btn-small", target:"_blank", rel:"noopener noreferrer", text:"Check"});
+      var sel = el("select", {"aria-label":"Status for " + p.name});
+      STATUSES.forEach(function(s){ var o = el("option", {value:s[0], text:s[1]}); sel.appendChild(o); });
+      sel.value = saved.status || "";
+      var ref = {p:p, input:input, link:checkLink, sel:sel};
+      function persist(){
+        var h = cleanHandle(input.value);
+        state.handles[p.id] = {handle:h, status:sel.value};
+        if (!h && !sel.value) delete state.handles[p.id];
+        save(); updateHandleRow(ref); updateProgress();
+      }
+      input.addEventListener("input", persist);
+      sel.addEventListener("change", persist);
+      tbody.appendChild(el("tr", {}, [
+        el("td", {class:"name", text:p.name}),
+        el("td", {class:"handle-cell"}, [input]),
+        el("td", {}, [checkLink]),
+        el("td", {}, [sel])
+      ]));
+      handleRefs.push(ref);
+      updateHandleRow(ref);
+    });
+  }
+  function updateHandleRow(ref){
+    var own = cleanHandle(ref.input.value);
+    var h = own || cleanHandle(state.kit.handle);
+    ref.input.placeholder = cleanHandle(state.kit.handle) || "type a handle";
+    if (h) { ref.link.href = fillPattern(ref.p.profile_url_pattern, h); ref.link.removeAttribute("aria-disabled"); ref.link.style.opacity = ""; ref.link.title = ref.link.href; }
+    else { ref.link.removeAttribute("href"); ref.link.setAttribute("aria-disabled", "true"); ref.link.style.opacity = ".5"; ref.link.title = "Type a preferred handle first"; }
+    ref.sel.className = ref.sel.value ? "status-" + ref.sel.value : "";
+  }
+
+  // ---------- progress ----------
+  function setBar(id, done, total, textId){
+    var pct = total ? Math.round(done / total * 100) : 0;
+    var bar = $(id); bar.firstElementChild.style.width = pct + "%"; bar.setAttribute("aria-valuenow", String(pct));
+    $(textId).textContent = done + " of " + total + " (" + pct + "%)";
+  }
+  function updateProgress(){
+    var total = DATA.platforms.length;
+    var done = DATA.platforms.filter(function(p){ return state.done[p.id]; }).length;
+    setBar("#prog-bar", done, total, "#prog-text");
+    var hTotal = handleRefs.length;
+    var hDone = handleRefs.filter(function(r){ return r.sel.value === "secured"; }).length;
+    setBar("#hprog-bar", hDone, hTotal, "#hprog-text");
+  }
+  function refreshDynamic(){
+    if (!DATA) return;
+    Object.keys(cardRefs).forEach(function(k){ updateCardFit(cardRefs[k]); });
+    handleRefs.forEach(updateHandleRow);
+    applyFilter(); updateProgress();
+  }
+
+  // ---------- backup / reset ----------
+  $("#export").addEventListener("click", function(){
+    var blob = new Blob([JSON.stringify({app:"profile-launchpad", saved:new Date().toISOString(), data:state}, null, 2)], {type:"application/json"});
+    var a = el("a", {href:URL.createObjectURL(blob), download:"profile-launchpad-backup.json"});
+    document.body.appendChild(a); a.click(); a.remove();
+  });
+  $("#import-btn").addEventListener("click", function(){ $("#import").click(); });
+  $("#import").addEventListener("change", function(e){
+    var f = e.target.files[0]; if (!f) return;
+    var r = new FileReader();
+    r.onload = function(){
+      try {
+        var d = JSON.parse(r.result).data;
+        if (!d || typeof d !== "object") throw 0;
+        if (!confirm("Replace what is saved on this device with the backup?")) return;
+        state = {kit:d.kit||{}, done:d.done||{}, handles:d.handles||{}}; save(); location.reload();
+      } catch(err){ alert("That file is not a Profile Launchpad backup."); }
+    };
+    r.readAsText(f); e.target.value = "";
+  });
+  $("#reset").addEventListener("click", function(){
+    if (!confirm("This erases your profile kit, ticks and handle statuses from THIS browser only. It cannot be undone. Download a backup first if unsure.\n\nErase now?")) return;
+    try { localStorage.removeItem(STORE_KEY); } catch(e) {}
+    location.reload();
+  });
+  $("#search").addEventListener("input", applyFilter);
+  $("#hide-done").addEventListener("change", applyFilter);
+
+  // ---------- load platform data ----------
+  function start(data){ DATA = data; renderPlatforms(); renderHandles(); refreshDynamic(); }
+  function embedded(){ return JSON.parse($("#platform-data").textContent); }
+  renderKit();
+  if (location.protocol === "file:" || !window.fetch) { start(embedded()); }
+  else {
+    fetch("links.json", {cache:"no-cache"}).then(function(r){ if (!r.ok) throw 0; return r.json(); })
+      .then(function(d){ if (!d || !d.platforms) throw 0; start(d); })
+      .catch(function(){ start(embedded()); });
+  }
+})();
+</script>
+</body>
+</html>
