@@ -61,6 +61,13 @@ button:hover,.btn:hover{border-color:var(--accent)}
 @media (prefers-color-scheme: dark){.btn-primary{color:#0f141b}}
 .btn-small{padding:5px 9px;font-size:.82rem}
 .copied{background:var(--ok-soft)!important;border-color:var(--ok)!important}
+.welcome{display:flex;gap:10px;align-items:flex-start;background:var(--accent-soft);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;margin:16px 0 0;font-size:.95rem;max-width:760px}
+.welcome .icon{font-size:1.2rem;line-height:1.3}
+.cat-filter{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.cat-filter .lbl{font-size:.9rem;color:var(--muted);margin-right:2px}
+.chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--border);background:var(--surface);border-radius:999px;padding:5px 12px;font-size:.88rem;cursor:pointer;user-select:none}
+.chip input{width:16px;height:16px;margin:0;accent-color:var(--accent);cursor:pointer}
+.chip.on{border-color:var(--accent);background:var(--accent-soft)}
 .toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
 .toolbar input[type=text]{max-width:280px}
 .toolbar label.check{display:flex;align-items:center;gap:6px;font-size:.92rem;color:var(--muted)}
@@ -123,6 +130,7 @@ footer{color:var(--muted);font-size:.85rem;padding:30px 0 50px;border-top:1px so
   <div class="hero">
     <h1>Profile Launchpad</h1>
     <p>Write your profile once, then copy it into every platform. Open a platform, create the account, paste your details, tick it off.</p>
+    <p class="welcome"><span class="icon" aria-hidden="true">&#128274;</span><span><strong>Free for anyone to use.</strong> No sign-up, no tracking. Everything you type stays on your own device and is never sent anywhere — not even to the owner of this site.</span></p>
   </div>
 
   <div class="progress-card" aria-live="polite">
@@ -146,6 +154,8 @@ footer{color:var(--muted);font-size:.85rem;padding:30px 0 50px;border-top:1px so
   <section id="platforms">
     <h2>Platforms</h2>
     <p class="section-intro">Each card shows what the platform is for, its bio limit and photo size, and whether your bio fits. Green = your bio fits; red = too long, shorten it or use a shorter version.</p>
+    <div class="cat-filter" id="cat-filter" role="group" aria-label="Choose which groups to show"><span class="lbl">Show groups:</span></div>
+    <p class="note" style="margin:-4px 0 12px">Untick a group you don't need. Hidden groups are left out of the platform list, the handle checklist and the progress bars.</p>
     <div class="toolbar">
       <label class="sr-only" for="search">Search platforms</label>
       <input type="text" id="search" placeholder="Search platforms…" autocomplete="off">
@@ -1043,11 +1053,11 @@ footer{color:var(--muted);font-size:.85rem;padding:30px 0 50px;border-top:1px so
   var STATUSES = [["", "Not checked"],["available","Available"],["taken","Taken"],["secured","Secured (account made)"]];
 
   // ---------- storage (browser only) ----------
-  function blankState(){ return {kit:{}, done:{}, handles:{}}; }
+  function blankState(){ return {kit:{}, done:{}, handles:{}, hiddenCats:{}}; }
   var state = blankState();
   try {
     var raw = localStorage.getItem(STORE_KEY);
-    if (raw) { var parsed = JSON.parse(raw); state.kit = parsed.kit||{}; state.done = parsed.done||{}; state.handles = parsed.handles||{}; }
+    if (raw) { var parsed = JSON.parse(raw); state.kit = parsed.kit||{}; state.done = parsed.done||{}; state.handles = parsed.handles||{}; state.hiddenCats = parsed.hiddenCats||{}; }
   } catch(e) {}
   function save(){ try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch(e) { toast("Could not save — your browser may be in private mode."); } }
 
@@ -1166,6 +1176,7 @@ footer{color:var(--muted);font-size:.85rem;padding:30px 0 50px;border-top:1px so
     var q = ($("#search").value || "").toLowerCase().trim();
     var hide = $("#hide-done").checked;
     document.querySelectorAll(".cat").forEach(function(wrap){
+      if (state.hiddenCats[wrap.getAttribute("data-cat")]) { wrap.style.display = "none"; return; }
       var shown = 0;
       wrap._items.forEach(function(p){
         var ref = cardRefs[p.id];
@@ -1177,6 +1188,21 @@ footer{color:var(--muted);font-size:.85rem;padding:30px 0 50px;border-top:1px so
       wrap.style.display = shown ? "" : "none";
       var done = wrap._items.filter(function(p){ return state.done[p.id]; }).length;
       wrap._pill.textContent = done + " / " + wrap._items.length + " done";
+    });
+    handleRefs.forEach(function(ref){ ref.row.style.display = state.hiddenCats[ref.p.category] ? "none" : ""; });
+  }
+  function shownPlatforms(){ return DATA.platforms.filter(function(p){ return !state.hiddenCats[p.category]; }); }
+  function renderCatFilter(){
+    var box = $("#cat-filter");
+    DATA.categories.forEach(function(cat){
+      var cb = el("input", {type:"checkbox"});
+      cb.checked = !state.hiddenCats[cat.id];
+      var chip = el("label", {class:"chip" + (cb.checked ? " on" : "")}, [cb, cat.label]);
+      cb.addEventListener("change", function(){
+        if (cb.checked) delete state.hiddenCats[cat.id]; else state.hiddenCats[cat.id] = true;
+        chip.classList.toggle("on", cb.checked); save(); applyFilter(); updateProgress();
+      });
+      box.appendChild(chip);
     });
   }
 
@@ -1201,12 +1227,13 @@ footer{color:var(--muted);font-size:.85rem;padding:30px 0 50px;border-top:1px so
       }
       input.addEventListener("input", persist);
       sel.addEventListener("change", persist);
-      tbody.appendChild(el("tr", {}, [
+      var row = el("tr", {}, [
         el("td", {class:"name", text:p.name}),
         el("td", {class:"handle-cell"}, [input]),
         el("td", {}, [checkLink]),
         el("td", {}, [sel])
-      ]));
+      ]);
+      ref.row = row; tbody.appendChild(row);
       handleRefs.push(ref);
       updateHandleRow(ref);
     });
@@ -1227,11 +1254,13 @@ footer{color:var(--muted);font-size:.85rem;padding:30px 0 50px;border-top:1px so
     $(textId).textContent = done + " of " + total + " (" + pct + "%)";
   }
   function updateProgress(){
-    var total = DATA.platforms.length;
-    var done = DATA.platforms.filter(function(p){ return state.done[p.id]; }).length;
+    var list = shownPlatforms();
+    var total = list.length;
+    var done = list.filter(function(p){ return state.done[p.id]; }).length;
     setBar("#prog-bar", done, total, "#prog-text");
-    var hTotal = handleRefs.length;
-    var hDone = handleRefs.filter(function(r){ return r.sel.value === "secured"; }).length;
+    var hRefs = handleRefs.filter(function(r){ return !state.hiddenCats[r.p.category]; });
+    var hTotal = hRefs.length;
+    var hDone = hRefs.filter(function(r){ return r.sel.value === "secured"; }).length;
     setBar("#hprog-bar", hDone, hTotal, "#hprog-text");
   }
   function refreshDynamic(){
@@ -1256,7 +1285,7 @@ footer{color:var(--muted);font-size:.85rem;padding:30px 0 50px;border-top:1px so
         var d = JSON.parse(r.result).data;
         if (!d || typeof d !== "object") throw 0;
         if (!confirm("Replace what is saved on this device with the backup?")) return;
-        state = {kit:d.kit||{}, done:d.done||{}, handles:d.handles||{}}; save(); location.reload();
+        state = {kit:d.kit||{}, done:d.done||{}, handles:d.handles||{}, hiddenCats:d.hiddenCats||{}}; save(); location.reload();
       } catch(err){ alert("That file is not a Profile Launchpad backup."); }
     };
     r.readAsText(f); e.target.value = "";
@@ -1270,7 +1299,7 @@ footer{color:var(--muted);font-size:.85rem;padding:30px 0 50px;border-top:1px so
   $("#hide-done").addEventListener("change", applyFilter);
 
   // ---------- load platform data ----------
-  function start(data){ DATA = data; renderPlatforms(); renderHandles(); refreshDynamic(); }
+  function start(data){ DATA = data; renderCatFilter(); renderPlatforms(); renderHandles(); refreshDynamic(); }
   function embedded(){ return JSON.parse($("#platform-data").textContent); }
   renderKit();
   if (location.protocol === "file:" || !window.fetch) { start(embedded()); }
