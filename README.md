@@ -8,6 +8,8 @@ A private one-page website that helps you set up online profiles on professional
 - **Platform cards** – 40 platforms in 5 groups. Each card has **Create account** and **Edit profile** buttons, the bio character limit, the recommended photo size, a check of whether your bio fits, and a **Done** tick box.
 - **Handle checklist** – checks whether your preferred username is free on each platform.
 - **Progress bars** – profiles finished and usernames secured.
+- **Show/hide groups** – untick groups you don't need (e.g. Medical/Radiology for non-doctors). Hidden groups are left out of the list and the progress bars.
+- **Free for anyone** – share the link with colleagues. Each person's details stay on their own device.
 
 **Your privacy**
 
