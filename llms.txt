@@ -1,6 +1,6 @@
 # Profile Launchpad
 
-> A single-page website that helps one person (a UK consultant radiologist) create and set up online profiles on common platforms quickly. It lists platforms with sign-up and edit-profile links, stores a reusable "master profile kit" (name, headline, bios, handles) and tracks progress. All personal data stays in the visitor's own browser (localStorage); nothing is sent to any server. The site never creates accounts or logs in anywhere.
+> A single-page website that helps anyone (originally built for a UK consultant radiologist) create and set up online profiles on common platforms quickly. It lists platforms with sign-up and edit-profile links, stores a reusable "master profile kit" (name, headline, bios, handles) and tracks progress. All personal data stays in the visitor's own browser (localStorage); nothing is sent to any server. The site never creates accounts or logs in anywhere.
 
 ## Files
 
